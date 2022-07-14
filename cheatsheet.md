@@ -1,4 +1,4 @@
-# Cheatsheet for cargo
+# Cheatsheet for rust book
 
 
 ## Common Cargo commands
@@ -18,3 +18,11 @@ The default directory of the build result is in "target/debug" and the the compu
 To build a release with optimization, the command is:
 cargo build --release
 The result will be in "target/release"
+
+# Update crate
+The update of the cargo will update the "Cargo.lock" file.
+A cargo command allow you to check for minor new version (0.3.11 -> 0.3.15 for instance).
+This command is:
+cargo update
+
+But if you want to update newer version, you have to update the "Cargo.toml" file.
