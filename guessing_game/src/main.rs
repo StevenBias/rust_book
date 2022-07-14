@@ -20,8 +20,10 @@ fn main() {
          *  trim    remove whitespaces at the bebining and the end of a string
          *  parse   parse string into number, catch an error in case the string does not contain number
          */
-        let guess : u8 = guess.trim().parse()
-            .expect("Please type a number");
+        let guess: u8 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_)  => continue,            // '_' catch all value
+        };
 
         match guess.cmp(&secret_number) {
             Ordering::Less    => println!("It's higher"),
