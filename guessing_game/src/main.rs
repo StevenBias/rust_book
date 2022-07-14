@@ -1,5 +1,6 @@
-use std::io;        // Input io library
-use rand::Rng;
+use std::io;                // Input io library
+use rand::Rng;              // Input library to generate rand
+use std::cmp::Ordering;     // For number comparison
 
 fn main() {
     println!("Guess the number!");
@@ -11,5 +12,10 @@ fn main() {
     io::stdin().read_line(&mut guess)       // &mut guess instead of &guess to make it mutable
         .expect("Failed to read line");     // Catch error
 
+    match guess.cmp(&secret_number) {
+        Ordering::Less    => println!("It's higher");
+        Ordering::Greater => println!("It's lower");
+        Ordering::Equal   => println!("You win!");
+    }
     println!("The secret number is: {}", secret_number);
 }
