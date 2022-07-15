@@ -23,11 +23,17 @@ fn main() {
     //  Returning values from loops
     let mut counter = 0;
 
-    let result = loop {
+    let mut result = loop {
         counter += 1;
         if counter == 10 {
             break counter * 2;
         }
     };
     println!("The result is: {}", result);
+
+    while result > 0 {
+        result -= 4;
+        println!("{}", result);
+    }
+    println!("LIFTOFF");
 }
