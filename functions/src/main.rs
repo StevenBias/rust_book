@@ -1,6 +1,7 @@
 fn main() {
     another_function(5, 12);
     statement_function();
+    println!("The value returned by five function is: {}", five());
 }
 
 fn another_function(x: i32, y: i32) {
@@ -19,4 +20,8 @@ fn statement_function() {
         x + 1
     };
     println!("The value of y is: {}", y);
+}
+
+fn five() -> i32 {
+    5
 }
