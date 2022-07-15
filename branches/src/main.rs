@@ -36,4 +36,15 @@ fn main() {
         println!("{}", result);
     }
     println!("LIFTOFF");
+
+    let a = [1, 2, 3, 4, 5];
+    for element in a.iter() {
+        println!("The value is: {}", element);
+    }
+
+    //  Use range for for loop
+    //  The higher border is excluded
+    for number in (1..4).rev() {
+        println!("{}!", number);
+    }
 }
