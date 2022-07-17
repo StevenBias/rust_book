@@ -80,7 +80,24 @@ fn main() {
     let hello = &str5[0..5];
     let world = &str5[6..11];
     println!("str5[0..5]: {}", hello);
+    println!("str5[..5]: {}", hello);
     println!("str5[6..11]: {}", world);
+    println!("str5[6..]: {}", world);
+    println!("str5[..]: {}", str5);
+
+    let fw = first_word(&str5);
+    println!("The value of fw is: {}", fw);
+}
+
+fn first_word(s: &String) -> &str {
+    let bytes = s.as_bytes();
+
+    for(i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+    return &s;
 }
 
 fn change_string(s: &mut String) {
