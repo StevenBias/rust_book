@@ -87,6 +87,11 @@ fn main() {
 
     let fw = first_word(&str5);
     println!("The value of fw is: {}", fw);
+
+    // Other slices
+    let a = [1, 2, 3, 4, 5];
+    let slice = &a[1..3];
+    println!("The value of slice is: {:?}", slice);
 }
 
 fn first_word(s: &str) -> &str {
