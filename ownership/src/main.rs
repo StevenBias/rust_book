@@ -71,8 +71,17 @@ fn main() {
     change_string(&mut str4);
     println!("The length of {} is: {}", str4, len);
     println!("The value of str4 is: {}", str4);
-} // Here, str3 goes out of scope and is dropped. str2 goes out of scope but was
-  // moved, so nothing happens. str1 goes out of scope and is dropped.
+
+
+    /***********************************/
+    /******     The slice type    ******/
+    /***********************************/
+    let str5 = String::from("Hello world");
+    let hello = &str5[0..5];
+    let world = &str5[6..11];
+    println!("str5[0..5]: {}", hello);
+    println!("str5[6..11]: {}", world);
+}
 
 fn change_string(s: &mut String) {
     s.push_str(", world");
