@@ -66,11 +66,17 @@ fn main() {
     /******     References and borrowing    ******/
     /*********************************************/
     //  Use references
-    let str4 = String::from("Hello");
+    let mut str4 = String::from("Hello");
     let len = calculate_length(&str4);
+    change_string(&mut str4);
     println!("The length of {} is: {}", str4, len);
+    println!("The value of str4 is: {}", str4);
 } // Here, str3 goes out of scope and is dropped. str2 goes out of scope but was
   // moved, so nothing happens. str1 goes out of scope and is dropped.
+
+fn change_string(s: &mut String) {
+    s.push_str(", world");
+}
 
 fn calculate_length(s: &String) -> usize {
     s.len()         // s is immutable, bc it is borrowed by reference
