@@ -1,5 +1,7 @@
 fn main() {
+    /*****************************************/
     /******     Variables in heap       ******/
+    /*****************************************/
     //  Strings are variables with unknown size, so it's stored in heap
     //  When the data is "moved", it is no more valid
 
@@ -16,7 +18,10 @@ fn main() {
 
     println!("s3 = {}, s4 = {}", s3, s4);
 
-    /******     Variables in heap       ******/
+
+    /******************************************/
+    /******     Variables in stack       ******/
+    /******************************************/
     //  All "primitives" types have known size
     //  So they are stored in stack
     //  When they are "moved", the variable is still valid
@@ -27,7 +32,10 @@ fn main() {
 
     println!("x = {}, y = {}", x, y);
 
+
+    /*********************************************/
     /******     Ownership and functions     ******/
+    /*********************************************/
     let s = String::from("hello");
     // s comes into scope
     takes_ownership(s); // s's value moves into the function...
@@ -37,7 +45,10 @@ fn main() {
                    // but i32 is Copy, so it's okay to
                    // still use x afterward
 
+
+    /*********************************************/
     /******     Return values and scope     ******/
+    /*********************************************/
     let str1 = gives_ownership();                   // gives_ownership moves its return
                                                     // value into str1
 
@@ -49,8 +60,21 @@ fn main() {
                                                     // takes_and_gives_back, which also
                                                     // moves its return value into str3
     println!("str3 = {}", str3);
+
+
+    /*********************************************/
+    /******     References and borrowing    ******/
+    /*********************************************/
+    //  Use references
+    let str4 = String::from("Hello");
+    let len = calculate_length(&str4);
+    println!("The length of {} is: {}", str4, len);
 } // Here, str3 goes out of scope and is dropped. str2 goes out of scope but was
   // moved, so nothing happens. str1 goes out of scope and is dropped.
+
+fn calculate_length(s: &String) -> usize {
+    s.len()         // s is immutable, bc it is borrowed by reference
+}
 
 fn gives_ownership() -> String {
     // gives_ownership will move its
