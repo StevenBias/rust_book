@@ -60,6 +60,15 @@ fn main() {
 
     println!("The value of six is: {:?}", six);
     println!("The value of none is: {:?}", none);
+
+    let some_u8_value = 5u8;
+    match some_u8_value {
+        1 => println!("one"),
+        3 => println!("three"),
+        5 => println!("five"),
+        7 => println!("seven"),
+        _ => (),
+    }
 }
 
 fn value_in_cents(coin: Coin) -> u8 {
