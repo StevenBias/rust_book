@@ -1,30 +1,7 @@
 // Tells Rust to load the contents of the module from another file with the
 // same name as the module
 mod front_of_house;
-
-mod back_of_house {
-    pub enum Appetizer {
-        Soup,
-        Salad,
-    }
-    pub struct Breakfast {
-        pub toast: String,
-        seasonal_fruit: String,
-    }
-    impl Breakfast {
-        pub fn summer(toast: &str) -> Breakfast {
-            Breakfast {
-                toast: String::from(toast),
-                seasonal_fruit: String::from("peaches"),
-            }
-        }
-    }
-    fn fix_incorrect_order() {
-        cook_order();
-        super::front_of_house::serving::serve_order();
-    }
-    fn cook_order() {}
-}
+mod back_of_house;
 
 // Absolute path
 pub use crate::front_of_house::hosting;
