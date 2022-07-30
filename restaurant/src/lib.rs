@@ -3,26 +3,17 @@ mod front_of_house {
         pub fn add_to_waitlist() {}
         fn seat_at_table() {}
     }
-    mod serving {
+    pub mod serving {
         fn take_order() {}
-        fn serve_order() {}
+        pub fn serve_order() {}
         fn take_payment() {}
     }
 }
 
-pub fn eat_at_restaurant() {
-    // Absolute path
-    crate::front_of_house::hosting::add_to_waitlist();
-    // Relative path
-    front_of_house::hosting::add_to_waitlist();
-}
-
-fn serve_order() {}
 mod back_of_house {
     fn fix_incorrect_order() {
         cook_order();
-        // Use "super" for parent folder
-        super::serve_order();
+        super::front_of_house::serving::serve_order();
     }
     fn cook_order() {}
 }
