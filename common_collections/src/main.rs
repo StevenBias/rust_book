@@ -20,4 +20,9 @@ fn main() {
         Some(third) => println!("The element {} of v1 is: {}", index+1, third),
         None => println!("There is no element at the place {} of v1", index+1)
     }
+
+    for i in &mut v1 {
+        *i *= 10;
+    }
+    println!("v1: {:?}", v1);
 }
