@@ -65,7 +65,15 @@ fn main() {
         println!("{}", c);
     }
 
+
+    /****   Hash Maps     ****/
     let mut scores = HashMap::new();
     scores.insert(String::from("Blue"), 10);
     scores.insert(String::from("Yellow"), 50);
+
+    // Use vectors to create hash maps
+    let teams = vec![String::from("Blue"), String::from("Yellow")];
+    let initial_scores = vec![10, 50];
+    let vscores: HashMap<_, _> = teams.iter().zip(initial_scores.iter()).collect();
+    println!("{:?}", vscores);
 }
