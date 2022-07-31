@@ -56,6 +56,7 @@ fn main() {
     let s4 = String::from("tic");
     let s5 = String::from("tac");
     let s6 = String::from("toe");
-    let s7 = s4 + "-" + &s5 + "-" + &s6;
+    // The format! macro doesn't take ownership of its parameters, unlike +operator
+    let s7 = format!("{}-{}-{}", s4, s5, s6);
     println!("s7 is: {}", s7);
 }
