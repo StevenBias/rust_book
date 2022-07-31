@@ -71,12 +71,16 @@ fn main() {
     let mut scores = HashMap::new();
     scores.insert(String::from("Blue"), 10);
     scores.insert(String::from("Yellow"), 50);
+    // Only Inserting a Value If the Key Has No Value
+    scores.entry(String::from("Yellow")).or_insert(50);     // The value already exist so it is ignores
+    scores.entry(String::from("Red")).or_insert(30);
+    scores.entry(String::from("Blue")).or_insert(50);     // The value already exist so it is ignores
 
     // Use vectors to create hash maps
     let teams = vec![String::from("Blue"), String::from("Yellow")];
-    let initial_scores = vec![10, 50];
+    let initial_scores = vec![1, 5];
     let vscores: HashMap<_, _> = teams.iter().zip(initial_scores.iter()).collect();
-    println!("{:?}", vscores);
+    println!("Hash map from vector values: {:?}", vscores);
 
     let field_name = String::from("Favorite color");
     let field_value = String::from("Blue");
@@ -92,4 +96,13 @@ fn main() {
     for (key, value) in &scores {
         println!("{}: {}", key, value);
     }
+
+    let text = "hello world wonderful world";
+    let mut map2 = HashMap::new();
+    for word in text.split_whitespace() {
+        // or_insert method returns &mut Vector
+        let count = map2.entry(word).or_insert(0);
+        *count += 1;
+    }
+    println!("{:?}", map2);
 }
