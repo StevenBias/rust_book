@@ -38,4 +38,24 @@ fn main() {
         SpreadsheetCell::Float(10.12),
     ];
     println!("row: {:?}", row);
+
+
+    /****   Strings     ****/
+    let mut s = String::from("foo");
+    let s2 = "bar";
+    s.push_str(s2);
+    println!("s is: {}", s);
+    println!("s2 is: {}", s2);
+
+    let hello = String::from("Hello, ");
+    let world = String::from("world!");
+    // The +operator signature looks like: fn add(seld, s: &str) -> String
+    let s3 = hello + &world;    // hello has been moved here and can no longer be used
+    println!("s3 is: {}", s3);
+
+    let s4 = String::from("tic");
+    let s5 = String::from("tac");
+    let s6 = String::from("toe");
+    let s7 = s4 + "-" + &s5 + "-" + &s6;
+    println!("s7 is: {}", s7);
 }
