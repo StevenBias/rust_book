@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 fn main() {
     let mut v1: Vec<i32> = Vec::new();
     let v2 = vec![1, 2, 3, 4, 5];
@@ -62,4 +64,8 @@ fn main() {
     for c in s7.chars() {
         println!("{}", c);
     }
+
+    let mut scores = HashMap::new();
+    scores.insert(String::from("Blue"), 10);
+    scores.insert(String::from("Yellow"), 50);
 }
