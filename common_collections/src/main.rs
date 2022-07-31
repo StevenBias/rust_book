@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 fn main() {
+    /****   Vectors     ****/
     let mut v1: Vec<i32> = Vec::new();
     let v2 = vec![1, 2, 3, 4, 5];
     // v2 is immutable
@@ -82,4 +83,13 @@ fn main() {
     let mut map = HashMap::new();
     map.insert(field_name, field_value);
     // field_name and field_value are invalid at this point
+
+    let team_name = String::from("Blue");
+    let score = scores.get(&team_name);
+    println!("Team name is : {}", team_name);
+    println!("Team score is : {:?}", score);
+
+    for (key, value) in &scores {
+        println!("{}: {}", key, value);
+    }
 }
