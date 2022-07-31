@@ -59,4 +59,7 @@ fn main() {
     // The format! macro doesn't take ownership of its parameters, unlike +operator
     let s7 = format!("{}-{}-{}", s4, s5, s6);
     println!("s7 is: {}", s7);
+    for c in s7.chars() {
+        println!("{}", c);
+    }
 }
