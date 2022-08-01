@@ -25,4 +25,9 @@ fn merge(vector: &mut Vec<i32>, left: u32, middle: u32, right: u32) {
     // Create two distinct sub-slices from a slice:
     let (vectorLeft, vectorRight) = vector.split_at_mut(middle.try_into().unwrap());     // Use try_into().unwrap() to convert a 'u32' to a 'usize' and panic if the converted value doesn't fit!
 
+    while indLeft < middle {
+        if &vectorLeft[indLeft.try_into().unwrap()] <= &vectorRight[indRight.try_into().unwrap()] {
+            &vector[index.try_into().unwrap()] = &vectorLeft[indLeft.try_into().unwrap()];
+        }
+    }
 }
