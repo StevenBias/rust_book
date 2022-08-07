@@ -6,8 +6,8 @@ fn main() {
     for i in &v.to_vec() {
         mean += i;
     };
-    // mean /= &v.len();
-    // println!("Mean is: {}", mean);
+    mean /= &v.len().try_into().unwrap();       // Use try_into and unwrap to avoid v to become Vec<usize> ...
+    println!("Mean is: {}", mean);
 
     let m = median(&v);
     println!("Median is: {}", m);
