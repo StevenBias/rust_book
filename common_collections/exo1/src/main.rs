@@ -1,11 +1,11 @@
 fn main() {
     let v = vec![10, 20, 5];
-    println!("Vector is: {:?}", v);
+    println!("Vector is: {:?}", v.to_vec());
 
-    // let mut mean = 0;
-    // for i in &v {
-    //     mean += i;
-    // };
+    let mut mean = 0;
+    for i in &v.to_vec() {
+        mean += i;
+    };
     // mean /= &v.len();
     // println!("Mean is: {}", mean);
 
