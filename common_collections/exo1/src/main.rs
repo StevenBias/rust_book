@@ -1,5 +1,6 @@
 fn main() {
-    let v = vec![10, 20, 5];
+    // let v = vec![10, 20, 5];
+    let v = vec![38, 27, 43, 3, 9, 82, 10];
     println!("Vector is: {:?}", v.to_vec());
 
     let mut mean = 0;
@@ -9,33 +10,25 @@ fn main() {
     mean /= &v.len().try_into().unwrap();       // Use try_into and unwrap to avoid v to become Vec<usize> ...
     println!("Mean is: {}", mean);
 
-    let m = median(&v);
-    println!("Median is: {}", m);
-}
-
-fn median(v: &Vec<i32>) -> i32 {
-    let res = merge_sort(&v.to_vec());
-    println!("Sorted is: {:?}", res);
-    res[res.len()/2]
+    let sorted_vec = merge_sort(&v);
+    println!("Sorted is: {:?}", sorted_vec);
+    let median = sorted_vec[sorted_vec.len()/2];
+    println!("Median is: {}", median);
 }
 
 fn merge_sort(vector: &Vec<i32>) -> Vec<i32> {
     if vector.len() > 1 {
         let middle = vector.len()/2;
-        let mut v_left: Vec<i32> = Vec::new();
-        for i in 0..middle as i32 {
-            v_left.push(vector[(i) as usize]);
-        }
-        v_left = merge_sort(&v_left);
-        let mut v_right: Vec<i32> = Vec::new();
-        for i in middle..vector.len() {
-            v_right.push(vector[(i) as usize]);
-        }
-        v_right = merge_sort(&v_right);
-        merge(&v_left, &v_right)
+
+        let v_left: Vec<i32> = (&vector[0..middle]).to_vec();
+        let v_left_sorted = merge_sort(&v_left);
+
+        let v_right: Vec<i32> = (&vector[middle..]).to_vec();
+        let v_right_sorted = merge_sort(&v_right);
+        return merge(&v_left_sorted , &v_right_sorted )
     }
     else {
-        vector.to_vec()
+        return vector.to_vec()
     }
 }
 
@@ -68,5 +61,5 @@ fn merge(vector_left: &Vec<i32>, vector_right: &Vec<i32>) -> Vec<i32> {
             ind_right += 1;
         }
     }
-    merged
+    return merged
 }
