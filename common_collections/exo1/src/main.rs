@@ -1,15 +1,26 @@
+use std::io;
 use std::collections::HashMap;
 use sort_algo::merge_sort;
 
 fn main() {
-    let v = vec![38, 27, 43, 3, 9, 82, 10, 43];
+    println!("Input the size of value you want to test: ");
+    let size = scan_number();
+
+    println!("Please enter the {:?} values:", size);
+    let mut v:Vec<i32> = Vec::new();
+    let mut index = 0;
+    while index < size {
+        let number = scan_number();
+        v.push(number);
+        index += 1;
+    }
     println!("Vector is: {:?}", v.to_vec());
 
-    let mut mean = 0;
+    let mut sum = 0;
     for i in &v.to_vec() {
-        mean += i;
+        sum += i;
     };
-    mean /= &v.len().try_into().unwrap();       // Use try_into and unwrap to avoid v to become Vec<usize> ...
+    let mean: f64 = sum as f64/ size as f64;
     println!("Mean is: {}", mean);
 
     let sorted_vec = merge_sort(&v);
@@ -27,5 +38,15 @@ fn main() {
             mode = i;
         }
     }
-    println!("Mode: {:?}", mode);
+    println!("Mode: {}", mode);
+}
+
+fn scan_number() -> i32 {
+    let mut number = String::new();
+    io::stdin().read_line(&mut number)
+        .expect("Failed to read line");
+
+    let number: i32 = number.trim().parse()
+        .expect("Please type a number");
+    return number
 }
