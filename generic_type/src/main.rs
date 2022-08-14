@@ -29,7 +29,7 @@ impl<T, U> Point<T, U> {
 //     largest
 // }
 
-fn notify(item: impl Summary) {
+fn notify<T: Summary>(item: T) {
     println!("Breaking new! {}", item.summarize())
 }
 
