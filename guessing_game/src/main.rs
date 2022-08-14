@@ -41,7 +41,10 @@ fn main() {
          */
         let guess: u8 = match guess.trim().parse() {
             Ok(num) => num,
-            Err(_)  => continue,            // '_' catch all value
+            Err(_)  => {
+                println!("Your number is not bewtween 0 and 100!");
+                continue;            // '_' catch all value
+            },
         };
         let guess = Guess::new(guess);
 
