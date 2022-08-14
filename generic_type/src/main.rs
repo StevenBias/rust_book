@@ -115,6 +115,7 @@ fn generic_type() {
     pair.cmd_display();
 }
 
+/*******************    Lifetimes   *******************/
 // Add "'a" to declare generic lifetime parameters inside angle brackets
 // between the function name and the parameter list
 fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
@@ -125,6 +126,12 @@ fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
     }
 }
 
+struct ImportantExcerpt<'a> {
+    part: &'a str,
+}
+
+/*******************    Lifetimes   *******************/
+
 fn main() {
     // generic_type();
 
@@ -133,5 +140,13 @@ fn main() {
     let string2 = "xyz";
     let result = longest(string1.as_str(), string2);
     println!("The longest string is {}", result);
-/*******************    Lifetimes   *******************/
+
+    let novel = String::from("Call me Ishmael. Some years ago...");
+    println!("The string is: {}", novel);
+    let first_sentence = novel.split('.')
+        .next()
+        .expect("Could not find a '.'");
+    let sentence = ImportantExcerpt { part: first_sentence };
+    println!("The value of the first sentence is: {}", sentence.part);
+    /*******************    Lifetimes   *******************/
 }
