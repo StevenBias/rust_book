@@ -15,7 +15,7 @@ impl Guess {
             value
         }
     }
-
+    // Getter
     fn value(&self) -> u8 {
         self.value
     }
