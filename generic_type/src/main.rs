@@ -12,6 +12,12 @@ impl<T, U> Point<T, U> {
     fn x(&self) -> &T {
         &self.x
     }
+    fn mixup<V, W> (self, other: Point<V, W>) -> Point<T, W> {
+        Point {
+            x: self.x,
+            y: other.y,
+        }
+    }
 }
 
 // fn largest<T>(list: &[T]) -> T {
@@ -32,8 +38,10 @@ fn main() {
     // let result = largest(&char_list);
     // println!("The largest char is {}", result);
 
-    let integer = Point { x: 5, y: 10};
-    let float = Point { x: 1.0, y: 4.0};
-    let p = Point { x:5, y: 4.0};
-    println!("p.x: {}", p.x());
+    let p0 = Point { x: 5, y: 10};
+    let p1 = Point { x: 1.0, y: 4.0};
+    let p2 = Point { x:5, y: 4.0};
+    let p3 = p1.mixup(p0);
+    println!("p2.x: {}, p2.y: {}", p2.x, p2.y);
+    println!("p3.x: {}, p3.y: {}", p3.x, p3.y);
 }
