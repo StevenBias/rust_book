@@ -29,6 +29,10 @@ impl<T, U> Point<T, U> {
 //     largest
 // }
 
+fn notify(item: impl Summary) {
+    println!("Breaking new! {}", item.summarize())
+}
+
 fn main() {
     // let number_list = vec![34, 50, 25, 100, 65];
     // let result = largest(&number_list);
@@ -59,4 +63,6 @@ fn main() {
         content: String::from("The Pittsburgh Penguins once again are the best hockey team in the NHL."),
     };
     println!("New article available! {}", article.summarize());
+
+    notify(tweet);
 }
