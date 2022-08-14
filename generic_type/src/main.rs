@@ -75,7 +75,7 @@ fn notify<T: Summary>(item: T) {
     println!("Breaking new! {}", item.summarize());
 }
 
-fn main() {
+fn generic_type() {
     let number_list = vec![34, 50, 25, 100, 65];
     let result = largest(&number_list);
     println!("The largest number is {}", result);
@@ -113,4 +113,25 @@ fn main() {
 
     let pair = Pair::new(5, 8);
     pair.cmd_display();
+}
+
+// Add "'a" to declare generic lifetime parameters inside angle brackets
+// between the function name and the parameter list
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+
+fn main() {
+    // generic_type();
+
+    /*******************    Lifetimes   *******************/
+    let string1 = String::from("abcd");
+    let string2 = "xyz";
+    let result = longest(string1.as_str(), string2);
+    println!("The longest string is {}", result);
+/*******************    Lifetimes   *******************/
 }
