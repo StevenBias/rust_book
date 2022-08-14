@@ -31,10 +31,20 @@ where T: Fn(u32) -> u32
 
 #[test]
 fn call_with_different_values() {
-    let mut c = Cacher(|a| a);
+    let mut c = Cacher::new(|a| a);
     let v1 = c.value(1);
     let v2 = c.value(2);
-    assert_eq!(v2, 2);
+    assert_eq!(v1, 1);
+    assert_ne!(v2, 2);
+}
+
+#[test]
+fn iterator_sum() {
+    let v1: Vec<i32> = vec![1, 2, 3];
+    // map is an iterator adopter, a consuming adopter must be call to get the result
+    // This is why the collect function is used
+    let v2: Vec<i32> = v1.iter().map(|x| x + 1).collect();
+    assert_eq!(v2, vec![2, 3, 4]);
 }
 
 fn generate_workout(intensity: u32, random_number: u32) {
