@@ -18,6 +18,11 @@ cargo check
 cargo run
 ```
 
+### Run all tests
+```
+cargo test
+```
+
 ### Build for release
 The default directory of the build result is in "target/debug" and the the compulation is not optimized.
 
