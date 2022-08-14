@@ -20,14 +20,16 @@ impl<T, U> Point<T, U> {
     }
 }
 
-fn largest<T: PartialOrd + Copy>(list: &[T]) -> T {
-    let mut largest = list[0];
-    for &item in list.iter() {
+fn largest<T: PartialOrd>(list: &[T]) -> &T {
+    let mut largest = &list[0];
+    let mut index = 0;
+    for (i, item) in list.iter().enumerate() {
         if item > largest {
-            largest = item;
+            largest = &item;
+            index = i;
         }
     }
-    largest
+    &list[index]
 }
 
 /****   Trait bounds with where Clauses  ****/
