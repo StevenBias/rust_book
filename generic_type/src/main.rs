@@ -63,19 +63,28 @@ fn largest<T: PartialOrd>(list: &[T]) -> &T {
 // }
 
 /****   Return types that implements trait  ****/
-fn returns_summarizable() -> impl Summary {
-    Tweet {
-        username: String::from("another_ebooks"),
-        content: String::from("Something else to read"),
-        reply: false,
-        retweet: false,
+fn returns_summarizable(is_tweet: bool) -> impl Summary {
+    if is_tweet {
+        Tweet {
+            username: String::from("another_ebooks"),
+            content: String::from("Something else to read"),
+            reply: false,
+            retweet: false,
+        }
+    } else {
+        Tweet {
+            username: String::from("horse_ebooks"),
+            content: String::from("of course, as you probably already know, people"),
+            reply: false,
+            retweet: false,
+        }
     }
 }
 fn notify<T: Summary>(item: T) {
     println!("Breaking new! {}", item.summarize());
 }
 
-fn main() {
+fn generic_type() {
     let number_list = vec![34, 50, 25, 100, 65];
     let result = largest(&number_list);
     println!("The largest number is {}", result);
@@ -108,9 +117,48 @@ fn main() {
 
     notify(tweet);
 
-    let ret_trait = returns_summarizable();
-    println!("Test return trait type: {}", ret_trait.summarize());
+    let ret_trait = returns_summarizable(true);
+    println!("Test return trait type with tweet: {}", ret_trait.summarize());
+
+    let ret_trait = returns_summarizable(false);
+    println!("Test return trait type with article: {}", ret_trait.summarize());
 
     let pair = Pair::new(5, 8);
     pair.cmd_display();
+}
+
+/*******************    Lifetimes   *******************/
+// Add "'a" to declare generic lifetime parameters inside angle brackets
+// between the function name and the parameter list
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+
+struct ImportantExcerpt<'a> {
+    part: &'a str,
+}
+
+/*******************    Lifetimes   *******************/
+
+fn main() {
+    generic_type();
+
+    /*******************    Lifetimes   *******************/
+    let string1 = String::from("abcd");
+    let string2 = "xyz";
+    let result = longest(string1.as_str(), string2);
+    println!("The longest string is {}", result);
+
+    let novel = String::from("Call me Ishmael. Some years ago...");
+    println!("The string is: {}", novel);
+    let first_sentence = novel.split('.')
+        .next()
+        .expect("Could not find a '.'");
+    let sentence = ImportantExcerpt { part: first_sentence };
+    println!("The value of the first sentence is: {}", sentence.part);
+    /*******************    Lifetimes   *******************/
 }
