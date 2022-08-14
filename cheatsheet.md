@@ -18,9 +18,26 @@ cargo check
 cargo run
 ```
 
-### Run all tests
+### Automated tests
+#### Run all tests
 ```
 cargo test
+```
+By default, tests run in parrallel with several threads.\
+To run tests consecutively, use only one thread:
+```
+cargo test -- --test-threads=1
+```
+#### Showing function output
+By default, if the test is ok, no output is printed.\
+To show print:
+```
+cargo test --nocapture
+```
+
+#### Run only ignored tests
+```
+cargo test -- --ignored
 ```
 
 ### Build for release
