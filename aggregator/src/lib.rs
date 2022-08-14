@@ -29,4 +29,8 @@ impl Summary for Tweet {
     fn summarize_author(&self) -> String {
         format!("@{}", self.username)
     }
+    fn summarize(&self) -> String {
+        let str = format!("Read more from {}", &self.username);
+        format!("{} with this content: {}", str, &self.content)
+    }
 }

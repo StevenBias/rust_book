@@ -38,6 +38,15 @@ fn some_function<T, U>(t: T, u: U) -> i32
     42
 }
 
+/****   Return types that implements trait  ****/
+fn returns_summarizable() -> impl Summary {
+    Tweet {
+        username: String::from("another_ebooks"),
+        content: String::from("Something else to read"),
+        reply: false,
+        retweet: false,
+    }
+}
 fn notify<T: Summary>(item: T) {
     println!("Breaking new! {}", item.summarize());
 }
@@ -74,4 +83,7 @@ fn main() {
     println!("New article available! {}", article.summarize());
 
     notify(tweet);
+
+    let ret_trait = returns_summarizable();
+    println!("Test return trait type: {}", ret_trait.summarize());
 }
