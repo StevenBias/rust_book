@@ -2,6 +2,25 @@ use std::io;                // Input io library
 use rand::Rng;              // Input library to generate rand
 use std::cmp::Ordering;     // For number comparison
 
+struct Guess {
+    value: u8,
+}
+
+impl Guess {
+    fn new(value: u8) -> Guess {
+        if value > 100 {
+            panic!("The value is greater than 100!");
+        }
+        Guess {
+            value
+        }
+    }
+    // Getter
+    fn value(&self) -> u8 {
+        self.value
+    }
+}
+
 fn main() {
     println!("Guess the number!");
 
@@ -22,10 +41,14 @@ fn main() {
          */
         let guess: u8 = match guess.trim().parse() {
             Ok(num) => num,
-            Err(_)  => continue,            // '_' catch all value
+            Err(_)  => {
+                println!("Your number is not bewtween 0 and 100!");
+                continue;            // '_' catch all value
+            },
         };
+        let guess = Guess::new(guess);
 
-        match guess.cmp(&secret_number) {
+        match guess.value().cmp(&secret_number) {
             Ordering::Less    => println!("It's higher"),
             Ordering::Greater => println!("It's lower"),
             Ordering::Equal   => {
