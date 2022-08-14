@@ -1,3 +1,4 @@
+use std::fmt::{Debug, Display};
 use aggregator::{Summary, Tweet, NewsArticle};
 
 // T type in struct
@@ -29,8 +30,16 @@ impl<T, U> Point<T, U> {
 //     largest
 // }
 
+/****   Trait bounds with where Clauses  ****/
+fn some_function<T, U>(t: T, u: U) -> i32
+    where T: Display + Clone,
+          U: Clone + Debug
+{
+    42
+}
+
 fn notify<T: Summary>(item: T) {
-    println!("Breaking new! {}", item.summarize())
+    println!("Breaking new! {}", item.summarize());
 }
 
 fn main() {
