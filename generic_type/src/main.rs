@@ -1,9 +1,9 @@
 // T type in struct
 // All T type fields of Point struct
 // must be the same type!
-struct Point<T> {
+struct Point<T, U> {
     x: T,
-    y: T,
+    y: U,
 }
 
 // fn largest<T>(list: &[T]) -> T {
@@ -26,4 +26,5 @@ fn main() {
 
     let integer = Point { x: 5, y: 10};
     let float = Point { x: 1.0, y: 4.0};
+    let integer_and_float = Point { x:5, y: 4.0};
 }
