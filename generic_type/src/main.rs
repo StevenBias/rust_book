@@ -1,3 +1,5 @@
+use aggregator::{Summary, Tweet};
+
 // T type in struct
 // All T type fields of Point struct
 // must be the same type!
@@ -9,9 +11,6 @@ struct Point<T, U> {
 // Specify rust the we implement method on a struct with generic type
 // by adding <T, U> after 'impl'
 impl<T, U> Point<T, U> {
-    fn x(&self) -> &T {
-        &self.x
-    }
     fn mixup<V, W> (self, other: Point<V, W>) -> Point<T, W> {
         Point {
             x: self.x,
@@ -44,4 +43,12 @@ fn main() {
     let p3 = p1.mixup(p0);
     println!("p2.x: {}, p2.y: {}", p2.x, p2.y);
     println!("p3.x: {}, p3.y: {}", p3.x, p3.y);
+
+    let tweet = Tweet {
+        username: String::from("horse_ebooks"),
+        content: String::from("of course, as you probably already know, people"),
+        reply: false,
+        retweet: false,
+    };
+    println!("1 new tweet: {}", tweet.summarize());
 }
