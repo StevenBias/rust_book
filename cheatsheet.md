@@ -18,6 +18,12 @@ cargo check
 cargo run
 ```
 
+#### Build and run a project with an environment variable
+For instance with variable named "ENV_VAR" equal to 1:
+```
+ENV_VAR=1 cargo run
+```
+
 ### Automated tests
 #### Run all tests
 ```
