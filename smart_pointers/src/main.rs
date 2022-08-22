@@ -1,3 +1,5 @@
+use std::ops::Deref;
+
 use crate::List::{Cons, Nil};
 
 enum List {
@@ -6,9 +8,18 @@ enum List {
 }
 
 struct MyBox<T>(T);
+
 impl<T> MyBox<T> {
     fn new(x: T) -> MyBox<T> {
         MyBox(x)
+    }
+}
+
+impl<T> Deref for MyBox<T> {
+    type Target = T;
+
+    fn deref(&self) -> &T {
+        &self.0
     }
 }
 
