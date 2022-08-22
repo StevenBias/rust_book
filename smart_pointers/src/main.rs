@@ -55,12 +55,15 @@ fn test_deref() {
     hello(&m);
 }
 
-fn main() {
-    test_box();
-    test_deref();
-
+fn test_drop() {
     let c = CustomSmartPointer{ data: String::from("My stuff")};
     drop(c);
     let d = CustomSmartPointer{ data: String::from("other stuff")};
     println!("CustomSmartPointer Created");
+}
+
+fn main() {
+    test_box();
+    test_deref();
+    test_drop();
 }
