@@ -90,11 +90,19 @@ The three most common smart pointers are:
 - **Rc\<T\>** , a reference counting type that enables multiple ownership
 - **Ref\<T\>** and **RefMut\<T\>** , accessed through **RefCell\<T\>** , a type that enforces the borrowing rules at runtime instead of compile time
 
-### Box\<t\>
+### Box\<T\>
 Boxes are most often used in these situations:
 - When you have a type whose size can’t be known at compile time and you want to use a value of that type in a context that requires an exact size
 - When you have a large amount of data and you want to transfer ownership but ensure the data won’t be copied when you do so
 - When you want to own a value and you care only that it’s a type that implements a particular trait rather than being of a specific type
+
+### RefCell\<T\>
+Similar to *Rc<T>*, *RefCell<T>* is only for **use in single-threaded scenarios** and will give you a compile-time error if you try using it in a multithreaded context.\
+With *RefCell*, the borrowing rules are enforced at running time.\
+So if the rules are broken, it will compile but the program will panic and exit!\
+Therefore, particularities of *RefCell* are:
+- At any given time, you can have either but not both of the following: one mutable reference or any number of immutable references.
+- References must always be valid.
 
 ### Treating a Type Like a Reference by Implementing the Deref Trait
 Implement the *Deref* function for the custom smart pointer.
@@ -113,3 +121,10 @@ in three cases:
 - From *&T* to *&U* when **T: Deref<Target=U>**
 - From &mut *T* to *&mut U* when **T: DerefMut<Target=U>**
 - From &mut *T* to *&U* when **T: Deref<Target=U>**
+
+### Recap of smart pointers
+Here is a recap of the reasons to choose **Box<T>**, **Rc<T>**, or **RefCell<T>**:
+- Rc<T> enables multiple owners of the same data; Box<T> and RefCell<T> have single owners.
+- Box<T> allows immutable or mutable borrows checked at compile time; Rc<T> allows only immutable borrows checked at compile time; RefCell<T> allows immutable or mutable borrows checked at runtime.
+- Because RefCell<T> allows mutable borrows checked at runtime, you can mutate the value inside the RefCell<T> even when the RefCell<T> is
+immutable.
