@@ -30,6 +30,10 @@ fn test_box() {
                                                 Box::new(Nil))))));
 }
 
+fn hello(name: &str) {
+    println!("Hello, {}!", name);
+}
+
 fn main() {
     test_box();
 
@@ -38,4 +42,7 @@ fn main() {
 
     assert_eq!(5, x);
     assert_eq!(5, *y);
+
+    let m = MyBox::new(String::from("Rust"));
+    hello(&m);
 }
