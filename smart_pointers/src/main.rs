@@ -5,6 +5,13 @@ enum List {
     Nil,
 }
 
+struct MyBox<T>(T);
+impl<T> MyBox<T> {
+    fn new(x: T) -> MyBox<T> {
+        MyBox(x)
+    }
+}
+
 fn test_box() {
     let list = Cons(1,
                     Box::new(Cons(2,
@@ -16,7 +23,7 @@ fn main() {
     test_box();
 
     let x = 5;
-    let y = Box::new(x);
+    let y = MyBox::new(x);
 
     assert_eq!(5, x);
     assert_eq!(5, *y);
