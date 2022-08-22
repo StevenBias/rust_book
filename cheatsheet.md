@@ -2,7 +2,7 @@
 
 
 ## Common Cargo commands
-### Build a prject
+### Build a project
 ```
 cargo build
 ```
