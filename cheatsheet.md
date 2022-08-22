@@ -96,3 +96,20 @@ Boxes are most often used in these situations:
 - When you have a large amount of data and you want to transfer ownership but ensure the data won’t be copied when you do so
 - When you want to own a value and you care only that it’s a type that implements a particular trait rather than being of a specific type
 
+### Treating a Type Like a Reference by Implementing the Deref Trait
+Implement the *Deref* function for the custom smart pointer.
+```
+use std::ops::Deref;
+
+impl<T> Deref for MyBox<T> {
+    u type Target = T;
+    fn deref(&self) -> &T {
+        v &self.0
+    }
+}
+```
+Rust does deref coercion when it finds types and trait implementations
+in three cases:
+- From *&T* to *&U* when **T: Deref<Target=U>**
+- From &mut *T* to *&mut U* when **T: DerefMut<Target=U>**
+- From &mut *T* to *&U* when **T: Deref<Target=U>**
