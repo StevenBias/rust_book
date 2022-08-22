@@ -60,6 +60,7 @@ fn main() {
     test_deref();
 
     let c = CustomSmartPointer{ data: String::from("My stuff")};
+    drop(c);
     let d = CustomSmartPointer{ data: String::from("other stuff")};
     println!("CustomSmartPointer Created");
 }
