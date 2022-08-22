@@ -36,14 +36,15 @@ where T: Messenger {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::cell::RefCell;
 
     struct MockMessenger {
-        sent_messages: Vec<String>,
+        sent_messages: RefCell<Vec<String>>,
     }
 
     impl MockMessenger {
         fn new() -> MockMessenger {
-            MockMessenger{ sent_messages: vec![]}
+            MockMessenger{ sent_messages: RefCell::new(vec![])}
         }
     }
 
