@@ -1,12 +1,11 @@
 use std::ops::Deref;
 use std::rc::Rc;
 use std::cell::RefCell;
-
 use crate::List::{Cons, Nil};
 
 #[derive(Debug)]
 enum List {
-    Cons(Rc<RefCell<i32>>, Rc<List>),
+    Cons(i32, RefCell<Rc<List>>),
     Nil,
 }
 
@@ -33,6 +32,15 @@ impl<T> Deref for MyBox<T> {
 impl Drop for CustomSmartPointer {
     fn drop(&mut self) {
         println!("Dropping CustomSmartPointer with data '{}'", self.data);
+    }
+}
+
+impl List {
+    fn tail(&self) -> Option<&RefCell<Rc<List>>> {
+        match self {
+            Cons(_, item) => Some(item),
+            Nil => None,
+        }
     }
 }
 
@@ -70,22 +78,49 @@ fn test_drop() {
 //     println!("count after c goes out of scope = {}", Rc::strong_count(&a));
 // }
 
+// fn test_rc_refcell() {
+//     let value = Rc::new(RefCell::new(5));
+
+//     let a = Rc::new(Cons(Rc::clone(&value), Rc::new(Nil)));
+//     println!("a before = {:?}", a);
+    
+//     let b = Cons(Rc::new(RefCell::new(6)), Rc::clone(&a));
+//     let c = Cons(Rc::new(RefCell::new(10)), Rc::clone(&a));
+
+//     *value.borrow_mut() += 10;
+
+//     println!("a after = {:?}", a);
+//     println!("b after = {:?}", b);
+//     println!("c after = {:?}", c);
+// }
+
 fn main() {
     test_deref();
     test_drop();
     // test_rc();
+    // test_rc_refcell();
 
-    let value = Rc::new(RefCell::new(5));
+    let a = Rc::new(Cons(5, RefCell::new(Rc::new(Nil))));
 
-    let a = Rc::new(Cons(Rc::clone(&value), Rc::new(Nil)));
-    println!("a before = {:?}", a);
-    
-    let b = Cons(Rc::new(RefCell::new(6)), Rc::clone(&a));
-    let c = Cons(Rc::new(RefCell::new(10)), Rc::clone(&a));
+    println!("a initial rc count = {}", Rc::strong_count(&a));
+    println!("a next item = {:?}", a.tail());
 
-    *value.borrow_mut() += 10;
+    let b = Rc::new(Cons(10, RefCell::new(Rc::clone(&a))));
 
-    println!("a after = {:?}", a);
-    println!("b after = {:?}", b);
-    println!("c after = {:?}", c);
+    println!("a rc count after b creation = {}", Rc::strong_count(&a));
+    println!("b initial rc count = {}", Rc::strong_count(&b));
+    println!("b next item = {:?}", b.tail());
+
+    // Modify 'a' so it points to 'b' instead of Nil
+    if let Some(link) = a.tail() {
+        *link.borrow_mut() = Rc::clone(&b);
+    }
+
+    println!("b rc count after changing a = {}", Rc::strong_count(&b));
+    println!("a rc count after changing a = {}", Rc::strong_count(&a));
+
+
+    // Uncomment the next line to see that we have a cycle
+    // it will overflow the stack
+    println!("a next item = {:?}", a.tail());
 }
