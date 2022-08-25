@@ -15,6 +15,12 @@ struct CustomSmartPointer {
     data: String,
 }
 
+#[derive(Debug)]
+struct Node {
+    value: i32,
+    children: RefCell<Vec<Rc<Node>>>,
+}
+
 impl<T> MyBox<T> {
     fn new(x: T) -> MyBox<T> {
         MyBox(x)
@@ -94,12 +100,7 @@ fn test_drop() {
 //     println!("c after = {:?}", c);
 // }
 
-fn main() {
-    test_deref();
-    test_drop();
-    // test_rc();
-    // test_rc_refcell();
-
+fn test_cycle_reference() {
     let a = Rc::new(Cons(5, RefCell::new(Rc::new(Nil))));
 
     println!("a initial rc count = {}", Rc::strong_count(&a));
@@ -123,4 +124,22 @@ fn main() {
     // Uncomment the next line to see that we have a cycle
     // it will overflow the stack
     println!("a next item = {:?}", a.tail());
+}
+
+fn main() {
+    test_deref();
+    test_drop();
+    // test_rc();
+    // test_rc_refcell();
+    test_cycle_reference();
+    
+    let leaf = Rc::new(Node {
+        value: 3,
+        children: RefCell::new(vec![]),
+    });
+
+    let branch = Rc::new(Node {
+        value: 5,
+        children: RefCell::new(vec![Rc::clone(&leaf)]),
+    });
 }
