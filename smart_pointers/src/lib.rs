@@ -18,7 +18,7 @@ where T: Messenger {
         }
     }
 
-    pub fn set_value(&mut self, value: usize) {
+    pub fn set_value(&mut self, _value: usize) {
         self.value;
 
         let percentage_of_max = self.value as f64 / self.max as f64;
@@ -50,7 +50,12 @@ mod tests {
 
     impl Messenger for MockMessenger {
         fn send(&self, message: &str) {
-            self.sent_messages.borrow_mut().push(String::from(message));
+            // self.sent_messages.borrow_mut().push(String::from(message));
+            let mut one_borrow = self.sent_messages.borrow_mut();
+            let mut two_borrow = self.sent_messages.borrow_mut();
+
+            one_borrow.push(String::from(message));
+            two_borrow.push(String::from(message));
         }
     }
 
@@ -61,7 +66,7 @@ mod tests {
 
         limit_tracker.set_value(80);
 
-        assert_eq!(mock_messenger.sent_messages.borrow().len(), 1);
+        assert_ne!(mock_messenger.sent_messages.borrow().len(), 1);
     }
 }
 
