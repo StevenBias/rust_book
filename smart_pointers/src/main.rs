@@ -128,8 +128,8 @@ fn test_cycle_reference() {
 }
 
 fn main() {
-    test_deref();
-    test_drop();
+    // test_deref();
+    // test_drop();
     // test_rc();
     // test_rc_refcell();
     // test_cycle_reference();
@@ -141,15 +141,40 @@ fn main() {
     });
 
     println!("lead parent = {:?}", leaf.parent.borrow().upgrade());
+    println!(
+        "leaf strong = {}, weak = {}",
+        Rc::strong_count(&leaf),
+        Rc::weak_count(&leaf),
+        );
 
-    let branch = Rc::new(Node {
-        value: 5,
-        parent: RefCell::new(Weak::new()),
-        children: RefCell::new(vec![Rc::clone(&leaf)]),
-    });
+    {
+        let branch = Rc::new(Node {
+            value: 5,
+            parent: RefCell::new(Weak::new()),
+            children: RefCell::new(vec![Rc::clone(&leaf)]),
+        });
 
-    // Modify leaf to give it a Weak<Node> reference to its parent
-    *leaf.parent.borrow_mut() = Rc::downgrade(&branch);
+        // Modify leaf to give it a Weak<Node> reference to its parent
+        *leaf.parent.borrow_mut() = Rc::downgrade(&branch);
+
+        println!(
+            "branch strong = {}, weak = {}",
+            Rc::strong_count(&branch),
+            Rc::weak_count(&branch),
+            );
+
+        println!(
+            "leaf strong = {}, weak = {}",
+            Rc::strong_count(&leaf),
+            Rc::weak_count(&leaf),
+            );
+    }
 
     println!("leaf parent = {:?}", leaf.parent.borrow().upgrade());
+
+    println!(
+        "leaf strong = {}, weak = {}",
+        Rc::strong_count(&leaf),
+        Rc::weak_count(&leaf),
+        );
 }
