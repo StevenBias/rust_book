@@ -96,6 +96,26 @@ Boxes are most often used in these situations:
 - When you have a large amount of data and you want to transfer ownership but ensure the data won’t be copied when you do so
 - When you want to own a value and you care only that it’s a type that implements a particular trait rather than being of a specific type
 
+### [Rc](https://doc.rust-lang.org/std/rc/struct.Rc.html)
+The inherent methods of *Rc* are all associated functions, 
+which means that you have to call them as e.g., **Rc::get_mut(&mut value)** instead of 
+*value.get_mut()*. This avoids conflicts with methods of the inner type *T*.
+
+#### [Weak](https://doc.rust-lang.org/std/rc/struct.Weak.html)
+Weak is a version of **Rc** that holds a non-owning reference to the managed allocation. The allocation is accessed by calling **upgrade** on the Weak pointer, which returns an **Option<Rc<T>>**.
+
+A *Weak* pointer is useful for keeping a temporary reference to the allocation managed by **Rc** without preventing its inner value from being dropped. It is also used to prevent circular references between **Rc** pointers, since mutual owning references would never allow either **Rc** to be dropped. For example, a tree could have strong **Rc** pointers from parent nodes to children, and *Weak* pointers from children back to their parents.
+
+The typical way to obtain a *Weak* pointer is to call **Rc::downgrade**.
+
+Constructs a new *Weak<T>*, without allocating any memory. Calling **upgrade** on the return value always gives **None**.\
+Example:
+```
+use std::rc::Weak;
+
+let empty: Weak<i64> = Weak::new();
+assert!(empty.upgrade().is_none());
+```
 ### RefCell\<T\>
 Similar to *Rc<T>*, *RefCell<T>* is only for **use in single-threaded scenarios** and will give you a compile-time error if you try using it in a multithreaded context.\
 With *RefCell*, the borrowing rules are enforced at running time.\
@@ -128,3 +148,4 @@ Here is a recap of the reasons to choose **Box<T>**, **Rc<T>**, or **RefCell<T>*
 - Box<T> allows immutable or mutable borrows checked at compile time; Rc<T> allows only immutable borrows checked at compile time; RefCell<T> allows immutable or mutable borrows checked at runtime.
 - Because RefCell<T> allows mutable borrows checked at runtime, you can mutate the value inside the RefCell<T> even when the RefCell<T> is
 immutable.
+

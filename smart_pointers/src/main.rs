@@ -1,5 +1,5 @@
 use std::ops::Deref;
-use std::rc::Rc;
+use std::rc::{Rc, Weak};
 use std::cell::RefCell;
 use crate::List::{Cons, Nil};
 
@@ -18,6 +18,7 @@ struct CustomSmartPointer {
 #[derive(Debug)]
 struct Node {
     value: i32,
+    parent: RefCell<Weak<Node>>,
     children: RefCell<Vec<Rc<Node>>>,
 }
 
@@ -123,7 +124,7 @@ fn test_cycle_reference() {
 
     // Uncomment the next line to see that we have a cycle
     // it will overflow the stack
-    println!("a next item = {:?}", a.tail());
+    // println!("a next item = {:?}", a.tail());
 }
 
 fn main() {
@@ -131,15 +132,24 @@ fn main() {
     test_drop();
     // test_rc();
     // test_rc_refcell();
-    test_cycle_reference();
+    // test_cycle_reference();
     
     let leaf = Rc::new(Node {
         value: 3,
+        parent: RefCell::new(Weak::new()),
         children: RefCell::new(vec![]),
     });
 
+    println!("lead parent = {:?}", leaf.parent.borrow().upgrade());
+
     let branch = Rc::new(Node {
         value: 5,
+        parent: RefCell::new(Weak::new()),
         children: RefCell::new(vec![Rc::clone(&leaf)]),
     });
+
+    // Modify leaf to give it a Weak<Node> reference to its parent
+    *leaf.parent.borrow_mut() = Rc::downgrade(&branch);
+
+    println!("leaf parent = {:?}", leaf.parent.borrow().upgrade());
 }
