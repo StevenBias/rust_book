@@ -1,7 +1,8 @@
 use std::thread;
 use std::sync::mpsc;
 use std::time::Duration;
-use std::sync::Mutex;
+use std::sync::{Mutex, Arc};
+use std::rc::Rc;
 
 fn threads() {
     let v = vec![1, 2, 3];
@@ -55,17 +56,21 @@ fn main() {
     // threads();
     // messages();
 
-    // Create Mutex<i32>
-    // Mutex is a smart pointer
-    let m = Mutex::new(5);
+    // Arc is for "Atomically reference counted"
+    let counter = Arc::new(Mutex::new(0));
+    let mut handles = vec![];
 
-    {
-        // We have to lock the mutex before access to the data
-        // lock method return a MutexGuard
-        let mut num = m.lock().unwrap();
-        *num = 6;
+    for _ in 0..10 {
+        let counter = Arc::clone(&counter);
+        let handle = thread::spawn(move || {
+            let mut num = counter.lock().unwrap();
+            *num += 1;
+        });
+        handles.push(handle);
     }
-    // As Mutex is a smart pointer, the lock is dropped when the MutexGuard is out of scope
 
-    println!("m = {:?}", m);
+    for handle in handles {
+        handle.join().unwrap();
+    }
+    println!("Result: {}", *counter.lock().unwrap());
 }
