@@ -52,10 +52,7 @@ fn messages() {
     }
 }
 
-fn main() {
-    // threads();
-    // messages();
-
+fn multiple_ownership() {
     // Arc is for "Atomically reference counted"
     let counter = Arc::new(Mutex::new(0));
     let mut handles = vec![];
@@ -73,4 +70,10 @@ fn main() {
         handle.join().unwrap();
     }
     println!("Result: {}", *counter.lock().unwrap());
+}
+
+fn main() {
+    threads();
+    messages();
+    multiple_ownership();
 }
