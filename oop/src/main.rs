@@ -1,6 +1,6 @@
 use blog::Post;
 
-fn main() {
+fn state_pattern () {
     let mut post = Post::new();
 
     post.add_text("I ate a salad for");
@@ -23,4 +23,13 @@ fn main() {
 
     post.approve();
     assert_eq!("I ate a salad for lunch today", post.content());
+}
+
+fn main() {
+    state_pattern();
+
+    let mut post = Post::new();
+
+    post.add_text("I ate a salad for lunch today");
+    assert_eq!("", post.content());
 }
