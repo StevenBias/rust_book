@@ -1,3 +1,9 @@
+use std::any::type_name;
+
+fn type_of<T>(_: T) -> &'static str {
+    type_name::<T>()
+}
+
 pub struct Post {
     state: Option<Box<dyn State>>,
     content: String,
@@ -37,6 +43,10 @@ impl Post {
         if let Some(s) = self.state.take() {
             self.state = Some(s.reject())
         }
+    }
+
+    pub fn get_state(&self) -> &str {
+        type_of(&self.state)
     }
 }
 
