@@ -9,8 +9,6 @@ fn main() {
     post.request_review();
     assert_eq!("", post.content());
 
-    println!("{}", post.get_state());
-
     post.reject();
     assert_eq!("", post.content());
 

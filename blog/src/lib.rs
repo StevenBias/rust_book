@@ -18,7 +18,11 @@ impl Post {
     }
 
     pub fn add_text(&mut self, text: &str) {
-        self.content.push_str(text);
+        if let Some(s) = &self.state {
+            // Add as_str to convert String to &str for push_str method
+            self.content.push_str(s.add_text(text).as_str());
+        } else {
+        }
     }
     
     pub fn content(&self) -> &str {
@@ -51,6 +55,9 @@ impl Post {
 }
 
 trait State {
+    fn add_text(&self, text: &str) -> String {
+        String::new()
+    }
     fn request_review(self: Box<Self>) -> Box<dyn State>;
     fn approve(self: Box<Self>) -> Box<dyn State>;
     fn reject(self: Box<Self>) -> Box<dyn State>;
@@ -62,6 +69,10 @@ trait State {
 struct Draft {}
 
 impl State for Draft {
+    fn add_text(&self, text: &str) -> String {
+        String::from(text)
+    }
+
     fn request_review(self: Box<Self>) -> Box<dyn State> {
         Box::new(PendingReview{nb_of_approve: 0})
     }
