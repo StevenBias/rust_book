@@ -1,6 +1,8 @@
-use blog::Post;
+use oop::{Post, DraftPost};
 
 fn state_pattern () {
+    use blog::Post;
+
     let mut post = Post::new();
 
     post.add_text("I ate a salad for");
