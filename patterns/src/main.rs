@@ -30,11 +30,7 @@ fn function_parameters() {
     print_coordonates(&point);
 }
 
-fn main() {
-    while_let();
-    for_loop();
-    function_parameters();
-
+fn pattern_syntax() {
     println!("");
     let x = 1;
     match x {
@@ -53,4 +49,34 @@ fn main() {
         1 ..= 5 => println!("one through five"),
         _       => println!("something else"),
     }
+}
+
+fn destrucure_struct() {
+    println!("\nDestructuring structs");
+    struct Point {
+        x: i32,
+        y: i32,
+    }
+
+    let p = Point{x: 3, y: 5};
+    // Another way to write the follow instruction is:
+    // let Point{a, y}
+    let Point{x: a, y: b} = p;
+
+    println!("The value of a is: {}", a);
+    println!("The value of b is: {}", b);
+
+    match p {
+        Point { x, y: 0 } => println!("On the x axis at {}", x),
+        Point { x: 0, y } => println!("On the y axis at {}", y),
+        Point { x, y } => println!("On neither axis: ({}, {})", x, y),
+    }
+}
+
+fn main() {
+    while_let();
+    for_loop();
+    function_parameters();
+    pattern_syntax();
+    destrucure_struct();
 }
