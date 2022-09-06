@@ -16,11 +16,22 @@ fn for_loop() {
     let v = vec!['a', 'b', 'c'];
 
     for (index, value) in v.iter().enumerate() {
-        println!("{}", value);
+        println!("{} is at index {}", value, index);
     }
+}
+
+fn print_coordonates(&(x, y): &(i32, i32)) {
+    println!("Current location: ({}, {})", x, y);
+}
+
+fn function_parameters() {
+    println!("\nprint_coordonates");
+    let point = (3, 5);
+    print_coordonates(&point);
 }
 
 fn main() {
     while_let();
     for_loop();
+    function_parameters();
 }
