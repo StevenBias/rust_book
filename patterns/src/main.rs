@@ -73,10 +73,19 @@ fn destrucure_struct() {
     }
 }
 
+fn ignoring_pattern() {
+    println!("\nIgnoring pattern");
+    let number = (2, 4, 8, 16, 32);
+    match number {
+        (first, .., last) => println!("First and last numbers: {}, {}", first, last),
+    }
+}
+
 fn main() {
     while_let();
     for_loop();
     function_parameters();
     pattern_syntax();
     destrucure_struct();
+    ignoring_pattern();
 }
