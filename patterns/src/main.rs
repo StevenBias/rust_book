@@ -34,4 +34,23 @@ fn main() {
     while_let();
     for_loop();
     function_parameters();
+
+    println!("");
+    let x = 1;
+    match x {
+        // Multiple pattern
+        1 | 2 => println!("1 or 2"),
+        3     => println!("three"),
+        _     => println!("anything"),
+    }
+
+
+    println!("");
+    let x = 5;
+    match x {
+        // Matching range
+        // '...' range pattern is deprecated
+        1 ..= 5 => println!("one through five"),
+        _       => println!("something else"),
+    }
 }
