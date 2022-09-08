@@ -4,9 +4,7 @@ fn arbitrary_mem_add() {
     let r = address as *const i32;
 }
 
-fn main() {
-    arbitrary_mem_add();
-
+unsafe fn raw_pointers() {
     let mut num = 5;
 
     // Create raw pointers from references
@@ -14,8 +12,14 @@ fn main() {
     let r2 = &mut num as *mut i32;
 
     // Dereferencing raw pointers within an unsafe block
+    println!("r1 is: {}", *r1);
+    println!("r2 is: {}", *r2);
+}
+
+fn main() {
+    arbitrary_mem_add();
+
     unsafe {
-        println!("r1 is: {}", *r1);
-        println!("r2 is: {}", *r2);
+        raw_pointers();
     }
 }
