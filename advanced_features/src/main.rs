@@ -36,6 +36,10 @@ fn split_at_mut(slice: &mut [i32], mid: usize) -> (&mut [i32], &mut [i32]) {
     }
 }
 
+extern "C" {
+    fn abs(input: i32) -> i32;
+}
+
 fn main() {
     arbitrary_mem_add();
     unsafe { raw_pointers();}
@@ -48,4 +52,8 @@ fn main() {
 
     assert_eq!(a, &mut [1, 2, 3]);
     assert_eq!(b, &mut [4, 5, 6]);
+
+    unsafe {
+        println!("Absolute value of -3 according to C: {}", abs(-3));
+    }
 }
