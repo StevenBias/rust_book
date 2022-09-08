@@ -179,3 +179,18 @@ and mutable pointers or multiple mutable pointers to the same location
 - Aren’t guaranteed to point to valid memory
 - Are allowed to be null
 - Don’t implement any automatic cleanup
+
+#### Calling rust functions from other languages
+We also need to add a #[no_mangle] annotation to tell the Rust compiler not to mangle
+the name of this function. *Mangling* is when a compiler changes the name we’ve given
+a function to a different name that contains more information for other parts of the
+compilation process to consume.
+We must disable the Rust compiler’s name mangling.
+In the following example, we make the call_from_c function accessible
+from C code, after it’s compiled to a shared library and linked from C:
+```
+#[no_mangle]
+pub extern "C" fn call_from_c() {
+    println!("Just called a Rust function from C!");
+}
+```
