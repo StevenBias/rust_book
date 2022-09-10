@@ -185,6 +185,37 @@ fn disambiguation() {
     println!("A baby dog is called a {}", <Dog as Animal>::baby_name());
 }
 
+fn super_traits() {
+    use std::fmt;
+
+    // We specify that OutlinePrint requires Display trait so we can use to_string function
+    trait OutlinePrint: fmt::Display {
+        fn outline_print(&self) {
+            let output = self.to_string();
+            let len = output.len();
+            println!("{}", "*".repeat(len + 4));
+            println!("*{}*", " ".repeat(len + 4));
+            println!("* {} *", output);
+            println!("*{}*", " ".repeat(len + 4));
+            println!("{}", "*".repeat(len + 4));
+        }
+    }
+
+    struct Point {
+        x: i32,
+        y: i32,
+    }
+
+    // The supertrait Point must implement the trait Display
+    impl fmt::Display for Point {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            write!(f, "({}, {})", self.x, self.y)
+        }
+    }
+
+    impl OutlinePrint for Point {}
+}
+
 fn main() {
     arbitrary_mem_add();
     unsafe { raw_pointers();}
@@ -192,4 +223,5 @@ fn main() {
 
     advanced_traits();
     disambiguation();
+    super_traits();
 }
