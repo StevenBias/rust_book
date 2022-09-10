@@ -87,11 +87,8 @@ fn unsafe_function() {
     }
 }
 
-fn main() {
-    arbitrary_mem_add();
-    unsafe { raw_pointers();}
-    unsafe_function();
-
+fn advanced_traits() {
+    println!("\nAdvanced traits");
     use std::ops::Add;
 
     #[derive(Debug, PartialEq)]
@@ -113,4 +110,25 @@ fn main() {
 
     assert_eq!(Point {x: 1, y: 0} + Point {x: 2, y: 3},
                Point {x: 3, y: 3});
+
+    struct Millimeters(u32);
+    struct Meters(u32);
+
+    // Specify impl Add<Meters> to set the value of the Right Hand Side type parameter instead of
+    // using the default of self
+    impl Add<Meters> for Millimeters {
+        type Output = Millimeters;
+        
+        fn add(self, other: Meters) -> Millimeters {
+            Millimeters(self.0 + (other.0 * 1000))
+        }
+    }
+}
+
+fn main() {
+    arbitrary_mem_add();
+    unsafe { raw_pointers();}
+    unsafe_function();
+
+    advanced_traits();
 }
