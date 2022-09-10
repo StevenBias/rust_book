@@ -125,10 +125,71 @@ fn advanced_traits() {
     }
 }
 
+fn disambiguation() {
+    println!("\nCalling methods with the same name");
+
+    trait Pilot {
+        fn fly(&self);
+    }
+
+    trait Wizard {
+        fn fly(&self);
+    }
+
+    struct Human;
+
+    impl Pilot for Human {
+        fn fly(&self) {
+            println!("This is your captain speaking.");
+        }
+    }
+
+    impl Wizard for Human {
+        fn fly(&self) {
+            println!("Up!");
+        }
+    }
+
+    impl Human {
+        fn fly(&self) {
+            println!("*waving arms furiously*");
+        }
+    }
+
+    let person = Human;
+    println!("Pilot fly method:");
+    Pilot::fly(&person);
+    println!("\nWizard fly method:");
+    Wizard::fly(&person);
+    println!("\nHuman fly method:");
+    person.fly();
+
+    trait Animal {
+        fn baby_name() -> String;
+    }
+
+    struct Dog;
+
+    impl Dog {
+        fn baby_name() -> String {
+            String::from("Spot")
+        }
+    }
+
+    impl Animal for Dog {
+        fn baby_name() -> String {
+            String::from("puppy")
+        }
+    }
+
+    println!("A baby dog is called a {}", <Dog as Animal>::baby_name());
+}
+
 fn main() {
     arbitrary_mem_add();
     unsafe { raw_pointers();}
     unsafe_function();
 
     advanced_traits();
+    disambiguation();
 }
