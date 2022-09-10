@@ -238,6 +238,26 @@ fn newtype_pattern() {
     println!("w = {}", w);
 }
 
+fn type_alias() {
+    // New, tje alias Kilometers is a synonym for i32
+    type Kilometers = i32;
+
+    let x: i32 = 5;
+    let y: Kilometers = 5;
+
+    println!("x + y = {}", x + y);
+
+    type Res<T> = Result<T, std::io::Error>;
+
+    pub trait Write {
+        fn write(&mut self, buf: &[u8]) -> Res<usize>;
+        fn flush(&mut self) -> Res<()>;
+
+        fn write_all(&mut self, buf: &[u8]) -> Res<()>;
+        // fn write_fmt(&mut self, fmt: Argmuents) -> Res<()>;
+    }
+}
+
 fn main() {
     arbitrary_mem_add();
     unsafe { raw_pointers();}
@@ -247,4 +267,5 @@ fn main() {
     disambiguation();
     super_traits();
     newtype_pattern();
+    type_alias();
 }
