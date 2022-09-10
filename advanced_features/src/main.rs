@@ -120,6 +120,8 @@ fn advanced_traits() {
         type Output = Millimeters;
         
         fn add(self, other: Meters) -> Millimeters {
+            // self.0 -> first paramter of the struct Millimeter
+            // other.0 -> first paramter of the struct Meter
             Millimeters(self.0 + (other.0 * 1000))
         }
     }
@@ -216,6 +218,23 @@ fn super_traits() {
     impl OutlinePrint for Point {}
 }
 
+fn newtype_pattern() {
+    use std::fmt;
+
+    struct Wrapper(Vec<String>);
+
+    impl fmt::Display for Wrapper {
+        fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+            // Use 'self.0' to access the inner Vec<T>, bc Wrapper is a tuple struct and Vac<T> is
+            // the item at index 0 in the tuple.
+            write!(f, "[{}]", self.0.join(", "))
+        }
+    }
+
+    let w = Wrapper(vec![String::from("hello"), String::from("world")]);
+    println!("w = {}", w);
+}
+
 fn main() {
     arbitrary_mem_add();
     unsafe { raw_pointers();}
@@ -224,4 +243,5 @@ fn main() {
     advanced_traits();
     disambiguation();
     super_traits();
+    newtype_pattern();
 }

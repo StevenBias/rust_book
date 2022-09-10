@@ -194,3 +194,42 @@ pub extern "C" fn call_from_c() {
     println!("Just called a Rust function from C!");
 }
 ```
+
+## Advanced traits
+### Newtype pattern
+The orphan rule that states we’re allowed to implement a trait on a type as
+long as either the trait or the type are local to our crate. It’s possible to get
+around this restriction using the newtype pattern, which involves creating
+a new type in a tuple struct.
+The tuple struct will have one field and be a thin wrapper around the
+type we want to implement a trait for.
+
+As an example, let’s say we want to implement Display on Vec<T>, which
+the orphan rule prevents us from doing directly because the Display trait
+and the Vec<T> type are defined outside our crate. We can make a Wrapper
+struct that holds an instance of Vec<T>; then we can implement Display on
+Wrapper and use the Vec<T> value.
+```
+use std::fmt;
+struct Wrapper(Vec<String>);
+impl fmt::Display for Wrapper {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "[{}]", self.0.join(", "))
+    }
+}
+fn main() {
+    let w = Wrapper(vec![String::from("hello"), String::from("world")]);
+    println!("w = {}", w);
+}
+```
+
+The downside of using this technique is that Wrapper is a new type, so it
+doesn’t have the methods of the value it’s holding. We would have to implement
+all the methods of Vec<T> directly on Wrapper such that the methods delegate to self.0,
+which would allow us to treat Wrapper exactly like a Vec<T>. If we
+wanted the new type to have every method the inner type has, implementing
+the Deref trait (discussed in “Treating Smart Pointers Like Regular References
+with the Deref Trait” on page 317) on the Wrapper to return the inner type
+would be a solution. If we don’t want the Wrapper type to have all the methods
+of the inner type—for example, to restrict the Wrapper type’s behavior—we
+would have to implement just the methods we do want manually.
