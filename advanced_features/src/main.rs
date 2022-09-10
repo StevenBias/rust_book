@@ -196,9 +196,9 @@ fn super_traits() {
             let output = self.to_string();
             let len = output.len();
             println!("{}", "*".repeat(len + 4));
-            println!("*{}*", " ".repeat(len + 4));
+            println!("*{}*", " ".repeat(len + 2));
             println!("* {} *", output);
-            println!("*{}*", " ".repeat(len + 4));
+            println!("*{}*", " ".repeat(len + 2));
             println!("{}", "*".repeat(len + 4));
         }
     }
@@ -216,6 +216,9 @@ fn super_traits() {
     }
 
     impl OutlinePrint for Point {}
+
+    let p = Point {x:1, y: 3};
+    p.outline_print();
 }
 
 fn newtype_pattern() {
