@@ -238,6 +238,19 @@ fn newtype_pattern() {
     println!("w = {}", w);
 }
 
+fn function_pointer() {
+    fn add_one(x: i32) -> i32 {
+        x + 1
+    }
+
+    fn do_twice(f: fn(i32) -> i32, arg: i32) -> i32 {
+        f(arg) + f(arg)
+    }
+
+    let answer = do_twice(add_one, 5);
+    println!("The answer is: {}", answer);
+}
+
 fn type_alias() {
     // New, tje alias Kilometers is a synonym for i32
     type Kilometers = i32;
@@ -258,6 +271,10 @@ fn type_alias() {
     }
 }
 
+fn return_closure() -> Box<dyn Fn(i32) -> i32> {
+    Box::new(|x| x + 1)
+}
+
 fn main() {
     arbitrary_mem_add();
     unsafe { raw_pointers();}
@@ -268,4 +285,7 @@ fn main() {
     super_traits();
     newtype_pattern();
     type_alias();
+
+    function_pointer();
+    return_closure();
 }
