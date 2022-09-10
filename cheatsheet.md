@@ -233,3 +233,14 @@ with the Deref Trait” on page 317) on the Wrapper to return the inner type
 would be a solution. If we don’t want the Wrapper type to have all the methods
 of the inner type—for example, to restrict the Wrapper type’s behavior—we
 would have to implement just the methods we do want manually.
+
+## Macros
+We’ve used macros like println! throughout this book, but we haven’t fully
+explored what a macro is and how it works. The term *macro* refers to a
+family of features in Rust: *declarative* macros with macro_rules! and three
+kinds of *procedural* macros:
+- Custom #[derive] macros that specify code added with the derive attribute used
+on structs and enums
+- Attribute-like macros that define custom attributes usable on any item
+- Function-like macros that look like function calls but operate on the tokens 
+specified as their argument
