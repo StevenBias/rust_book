@@ -88,23 +88,29 @@ RUST_BACKTRACE=1 cargo run
 The three most common smart pointers are:
 - **Box\<T\>** for allocating values on the heap
 - **Rc\<T\>** , a reference counting type that enables multiple ownership
-- **Ref\<T\>** and **RefMut\<T\>** , accessed through **RefCell\<T\>** , a type that enforces the borrowing rules at runtime instead of compile time
+- **Ref\<T\>** and **RefMut\<T\>** , accessed through **RefCell\<T\>**,
+a type that enforces the borrowing rules at runtime instead of compile time
 
 ### Box\<T\>
 Boxes are most often used in these situations:
-- When you have a type whose size can’t be known at compile time and you want to use a value of that type in a context that requires an exact size
-- When you have a large amount of data and you want to transfer ownership but ensure the data won’t be copied when you do so
-- When you want to own a value and you care only that it’s a type that implements a particular trait rather than being of a specific type
-
+- When you have a type whose size can’t be known at compile time
+and you want to use a value of that type in a context that requires an exact size
+- When you have a large amount of data and you want to transfer ownership
+but ensure the data won’t be copied when you do so
 ### [Rc](https://doc.rust-lang.org/std/rc/struct.Rc.html)
 The inherent methods of *Rc* are all associated functions, 
 which means that you have to call them as e.g., **Rc::get_mut(&mut value)** instead of 
 *value.get_mut()*. This avoids conflicts with methods of the inner type *T*.
 
 #### [Weak](https://doc.rust-lang.org/std/rc/struct.Weak.html)
-Weak is a version of **Rc** that holds a non-owning reference to the managed allocation. The allocation is accessed by calling **upgrade** on the Weak pointer, which returns an **Option<Rc<T>>**.
+Weak is a version of **Rc** that holds a non-owning reference to the managed allocation.
+The allocation is accessed by calling **upgrade** on the Weak pointer, which returns an **Option<Rc<T>>**.
 
-A *Weak* pointer is useful for keeping a temporary reference to the allocation managed by **Rc** without preventing its inner value from being dropped. It is also used to prevent circular references between **Rc** pointers, since mutual owning references would never allow either **Rc** to be dropped. For example, a tree could have strong **Rc** pointers from parent nodes to children, and *Weak* pointers from children back to their parents.
+A *Weak* pointer is useful for keeping a temporary reference to the allocation managed by **Rc** without
+preventing its inner value from being dropped. It is also used to prevent circular references between
+**Rc** pointers, since mutual owning references would never allow either **Rc** to be dropped.
+For example, a tree could have strong **Rc** pointers from parent nodes to children,
+and *Weak* pointers from children back to their parents.
 
 The typical way to obtain a *Weak* pointer is to call **Rc::downgrade**.
 
@@ -117,11 +123,13 @@ let empty: Weak<i64> = Weak::new();
 assert!(empty.upgrade().is_none());
 ```
 ### RefCell\<T\>
-Similar to *Rc<T>*, *RefCell<T>* is only for **use in single-threaded scenarios** and will give you a compile-time error if you try using it in a multithreaded context.\
+Similar to *Rc<T>*, *RefCell<T>* is only for **use in single-threaded scenarios**
+and will give you a compile-time error if you try using it in a multithreaded context.\
 With *RefCell*, the borrowing rules are enforced at running time.\
 So if the rules are broken, it will compile but the program will panic and exit!\
 Therefore, particularities of *RefCell* are:
-- At any given time, you can have either but not both of the following: one mutable reference or any number of immutable references.
+- At any given time, you can have either but not both of the following:
+one mutable reference or any number of immutable references.
 - References must always be valid.
 
 ### Treating a Type Like a Reference by Implementing the Deref Trait
@@ -145,7 +153,94 @@ in three cases:
 ### Recap of smart pointers
 Here is a recap of the reasons to choose **Box<T>**, **Rc<T>**, or **RefCell<T>**:
 - Rc<T> enables multiple owners of the same data; Box<T> and RefCell<T> have single owners.
-- Box<T> allows immutable or mutable borrows checked at compile time; Rc<T> allows only immutable borrows checked at compile time; RefCell<T> allows immutable or mutable borrows checked at runtime.
-- Because RefCell<T> allows mutable borrows checked at runtime, you can mutate the value inside the RefCell<T> even when the RefCell<T> is
+- Box<T> allows immutable or mutable borrows checked at compile time; Rc<T> allows only
+immutable borrows checked at compile time; RefCell<T> allows immutable or mutable borrows checked at runtime.
+- Because RefCell<T> allows mutable borrows checked at runtime, you can mutate the value inside
+the RefCell<T> even when the RefCell<T> is
 immutable.
 
+## Unsafe Rust
+### Unsafe superpowers
+You can take four actions in unsafe Rust, called
+*unsafe superpowers*, that you can’t in safe Rust. Those superpowers include
+the ability to:
+- Dereference a raw pointer
+- Call an unsafe function or method
+- Access or modify a mutable static variable
+- Implement an unsafe trait
+
+#### Dereferencing a Raw Pointer
+As with references, raw pointers can be immutable or mutable and are written as
+`*const T and *mut T`, respectively.
+
+Different from references and smart pointers, raw pointers:
+- Are allowed to ignore the borrowing rules by having both immutable
+and mutable pointers or multiple mutable pointers to the same location
+- Aren’t guaranteed to point to valid memory
+- Are allowed to be null
+- Don’t implement any automatic cleanup
+
+#### Calling rust functions from other languages
+We also need to add a #[no_mangle] annotation to tell the Rust compiler not to mangle
+the name of this function. *Mangling* is when a compiler changes the name we’ve given
+a function to a different name that contains more information for other parts of the
+compilation process to consume.
+We must disable the Rust compiler’s name mangling.
+In the following example, we make the call_from_c function accessible
+from C code, after it’s compiled to a shared library and linked from C:
+```
+#[no_mangle]
+pub extern "C" fn call_from_c() {
+    println!("Just called a Rust function from C!");
+}
+```
+
+## Advanced traits
+### Newtype pattern
+The orphan rule that states we’re allowed to implement a trait on a type as
+long as either the trait or the type are local to our crate. It’s possible to get
+around this restriction using the newtype pattern, which involves creating
+a new type in a tuple struct.
+The tuple struct will have one field and be a thin wrapper around the
+type we want to implement a trait for.
+
+As an example, let’s say we want to implement Display on Vec<T>, which
+the orphan rule prevents us from doing directly because the Display trait
+and the Vec<T> type are defined outside our crate. We can make a Wrapper
+struct that holds an instance of Vec<T>; then we can implement Display on
+Wrapper and use the Vec<T> value.
+```
+use std::fmt;
+struct Wrapper(Vec<String>);
+impl fmt::Display for Wrapper {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "[{}]", self.0.join(", "))
+    }
+}
+fn main() {
+    let w = Wrapper(vec![String::from("hello"), String::from("world")]);
+    println!("w = {}", w);
+}
+```
+
+The downside of using this technique is that Wrapper is a new type, so it
+doesn’t have the methods of the value it’s holding. We would have to implement
+all the methods of Vec<T> directly on Wrapper such that the methods delegate to self.0,
+which would allow us to treat Wrapper exactly like a Vec<T>. If we
+wanted the new type to have every method the inner type has, implementing
+the Deref trait (discussed in “Treating Smart Pointers Like Regular References
+with the Deref Trait” on page 317) on the Wrapper to return the inner type
+would be a solution. If we don’t want the Wrapper type to have all the methods
+of the inner type—for example, to restrict the Wrapper type’s behavior—we
+would have to implement just the methods we do want manually.
+
+## Macros
+We’ve used macros like println! throughout this book, but we haven’t fully
+explored what a macro is and how it works. The term *macro* refers to a
+family of features in Rust: *declarative* macros with macro_rules! and three
+kinds of *procedural* macros:
+- Custom #[derive] macros that specify code added with the derive attribute used
+on structs and enums
+- Attribute-like macros that define custom attributes usable on any item
+- Function-like macros that look like function calls but operate on the tokens 
+specified as their argument
