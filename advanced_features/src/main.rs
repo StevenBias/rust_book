@@ -275,6 +275,17 @@ fn return_closure() -> Box<dyn Fn(i32) -> i32> {
     Box::new(|x| x + 1)
 }
 
+fn derive_macros() {
+    println!("\nDerive marcos");
+    use hello_macro::HelloMacro;
+    use hello_macro_derive::HelloMacro;
+
+    #[derive(HelloMacro)]
+    struct Pancakes;
+
+    Pancakes::hello_macro();
+}
+
 fn main() {
     arbitrary_mem_add();
     unsafe { raw_pointers();}
@@ -288,4 +299,6 @@ fn main() {
 
     function_pointer();
     return_closure();
+    
+    derive_macros();
 }
