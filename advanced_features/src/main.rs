@@ -267,7 +267,7 @@ fn type_alias() {
         fn flush(&mut self) -> Res<()>;
 
         fn write_all(&mut self, buf: &[u8]) -> Res<()>;
-        // fn write_fmt(&mut self, fmt: Argmuents) -> Res<()>;
+        // fn write_fmt(&mut self, fmt: Arguments) -> Res<()>;
     }
 }
 
